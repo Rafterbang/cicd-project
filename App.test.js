@@ -1,27 +1,34 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+import { create } from "react-test-renderer";
 import App from "./App";
 
 describe("App component", () => {
   test("renders correctly", () => {
-    const { getByText } = render(<App />);
-    const countText = getByText("Count: 0");
-    expect(countText).toBeTruthy();
+    const tree = create(<App />).toJSON();
+    expect(tree).toMatchSnapshot();
   });
 
   test("increments count when Increment button is pressed", () => {
-    const { getByText } = render(<App />);
-    const incrementButton = getByText("Increment");
-    fireEvent.press(incrementButton);
-    const countText = getByText("Count: 1");
-    expect(countText).toBeTruthy();
+    const component = create(<App />);
+    const instance = component.root;
+
+    const incrementButton = instance.findByProps({ testID: "incrementButton" });
+    incrementButton.props.onPress();
+
+    expect(instance.findByProps({ testID: "countText" }).props.children).toBe(
+      "Count: 1"
+    );
   });
 
   test("decrements count when Decrement button is pressed", () => {
-    const { getByText } = render(<App />);
-    const decrementButton = getByText("Decrement");
-    fireEvent.press(decrementButton);
-    const countText = getByText("Count: -1");
-    expect(countText).toBeTruthy();
+    const component = create(<App />);
+    const instance = component.root;
+
+    const decrementButton = instance.findByProps({ testID: "decrementButton" });
+    decrementButton.props.onPress();
+
+    expect(instance.findByProps({ testID: "countText" }).props.children).toBe(
+      "Count: -1"
+    );
   });
 });

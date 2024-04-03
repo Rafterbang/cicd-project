@@ -15,8 +15,8 @@ const App = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Count: {count}</Text>
-      <Button title="Increment" onPress={increment} />
-      <Button title="Decrement" onPress={decrement} />
+      <Button testID="incrementButton" title="Increment" onPress={increment} />
+      <Button testID="decrementButton" title="Decrement" onPress={decrement} />
     </View>
   );
 };
