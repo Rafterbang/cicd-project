@@ -3,32 +3,16 @@ import { create } from "react-test-renderer";
 import App from "./App";
 
 describe("App component", () => {
-  test("renders correctly", () => {
-    const tree = create(<App />).toJSON();
-    expect(tree).toMatchSnapshot();
-  });
-
-  test("increments count when Increment button is pressed", () => {
+  test("sum function adds 3 + 5 to equal 8", () => {
     const component = create(<App />);
     const instance = component.root;
 
-    const incrementButton = instance.findByProps({ testID: "incrementButton" });
-    incrementButton.props.onPress();
+    // Find the Text component and extract its children (the result)
+    const resultText = instance.findByType("Text").props.children;
 
-    expect(instance.findByProps({ testID: "countText" }).props.children).toBe(
-      "Count: 1"
-    );
-  });
+    // Extract the number from the resultText (e.g., "Result: 8" -> 8)
+    const result = parseInt(resultText.split(" ")[1]);
 
-  test("decrements count when Decrement button is pressed", () => {
-    const component = create(<App />);
-    const instance = component.root;
-
-    const decrementButton = instance.findByProps({ testID: "decrementButton" });
-    decrementButton.props.onPress();
-
-    expect(instance.findByProps({ testID: "countText" }).props.children).toBe(
-      "Count: -1"
-    );
+    expect(result).toBe(8);
   });
 });
